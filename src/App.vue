@@ -1,17 +1,26 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <todoHeader></todoHeader>
+    <router-view></router-view>
+    <todoFooter></todoFooter>
   </div>
 </template>
 
 <script>
+import todoHeader from '@/components/header/header'
+import todoFooter from '@/components/footer/footer'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    todoHeader,
+    todoFooter
+  }
 }
 </script>
 
 <style>
+@import "./style/common.scss";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
