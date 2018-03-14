@@ -1,16 +1,19 @@
 <template>
   <div class="main-body">
     <input type="text" class="todo-input" autofocus="autofocus" placeholder="What's next ?" @keyup.enter="createToDo" v-model="inputText">
-    <todo-item v-for="todo in todos" :todo="todo" :key="todo.id" @del="deleteToDo(todo)"></todo-item>
+    <todo-item v-for="todo in filteredToDos" :todo="todo" :key="todo.id" @del="deleteToDo(todo)"></todo-item>
+    <tab-list :filter="filter" :todos="todos" @clearAll="clearAllCompleted" @triggerFilter="triggerFilter"></tab-list>
   </div>
 </template>
 
 <script>
 import todoItem from '@/components/todo/item'
+import tabList from '@/components/todo/tabs'
 export default {
   name: 'todoApp',
   components: {
-    'todo-item': todoItem
+    'todo-item': todoItem,
+    'tab-list': tabList
   },
   data () {
     return {
@@ -21,8 +24,9 @@ export default {
       todo: {
         id: 0,
         content: 'Have Lunch',
-        status: 0 // 0 未完成 1 进行中 2 完成
-      }
+        completed: false
+      },
+      filter: 'all'
     }
   },
   methods: {
@@ -34,7 +38,7 @@ export default {
       _this.todos.unshift({
         id: _this.count++,
         content: _this.inputText.trim(),
-        status: 0
+        completed: false
       })
       _this.inputText = ''
     },
@@ -42,6 +46,22 @@ export default {
       var _this = this
       var index = _this.todos.indexOf(todo)
       _this.todos.splice(index, 1)
+    },
+    triggerFilter (state) {
+      this.filter = state
+    },
+    clearAllCompleted () {
+      this.todos = this.todos.filter(todo => !todo.completed)
+    }
+  },
+  computed: {
+    filteredToDos () {
+      var _this = this
+      if (_this.filter === 'all') {
+        return _this.todos
+      }
+      const completed = _this.filter === 'completed'
+      return _this.todos.filter(todo => completed === todo.completed)
     }
   }
 }
@@ -65,6 +85,7 @@ export default {
     font-size: 24px;
     padding-left: 20px;
     color: #555;
+    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
   }
   input:focus {
     outline: none;

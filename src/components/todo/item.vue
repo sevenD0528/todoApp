@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <input type="checkbox" name="">
+    <input type="checkbox" v-model="todo.completed">
     <label class="content">{{todo.content}}</label>
     <label class="del-btn" @click="del">x</label>
   </div>
@@ -24,6 +24,8 @@ export default {
       var _this = this
       _this.$emit('del', _this.todo)
     }
+  },
+  computed: {
   }
 }
 </script>
