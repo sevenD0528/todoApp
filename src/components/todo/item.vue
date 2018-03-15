@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <input type="checkbox" v-model="todo.completed">
-    <label class="content">{{todo.content}}</label>
+    <label :class="['content', todo.completed ? 'checked' : '']">{{todo.content}}</label>
     <label class="del-btn" @click="del">x</label>
   </div>
 </template>
@@ -65,6 +65,11 @@ export default {
     display: flex;
     flex: 1;
     margin-left: 30px;
+  }
+
+  .content.checked {
+    text-decoration: line-through;
+    color: #555;
   }
   .del-btn {
     position: relative;
